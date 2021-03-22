@@ -3,7 +3,7 @@ var express = require('express');
 var hbs = require('hbs');
 var app = express();
 var path = require('path');
-var PORT = process.env.port || 8000;
+var PORT = process.env.port || 8080;
 
 
 
@@ -15,13 +15,13 @@ const template_path = path.join(__dirname, '../templates/views');
 const partials_path = path.join(__dirname, '../templates/partials');
 
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 //app.use(express.static(static_path));
 app.set("view engine", "hbs");
 app.set("views", template_path);
 hbs.registerPartials(partials_path);
 
-app.listen(PORT, function(){
+app.listen(PORT, function () {
     console.log('Server is listening at port : ' + PORT);
 });
 
@@ -34,13 +34,12 @@ app.get('/register', function (req, res) {
 });
 
 app.post('/register', async function (req, res) {
-    try{
+    try {
 
         const password = req.body.password;
         const cpassword = req.body.confirmpassword;
 
-        if(password === cpassword)
-        {
+        if (password === cpassword) {
             const registerEmployee = new Register({
 
                 firstname: req.body.firstname,
@@ -54,12 +53,11 @@ app.post('/register', async function (req, res) {
 
             });
 
-           var registerd = await registerEmployee.save();
-           res.status(201).render('index');          
-         }           
+            var registerd = await registerEmployee.save();
+            res.status(201).render('index');
+        }
     }
-    catch(err)
-    {
+    catch (err) {
         console.log(err);
         res.status(400).send(err);
     }
@@ -71,24 +69,21 @@ app.get('/login', function (req, res) {
 });
 
 app.post('/login', async function (req, res) {
-    try{
+    try {
 
         const inputEmail = req.body.email;
         const inputPassword = req.body.password;
         //Check if user exists
-        var userDetails = await Register.findOne({email : inputEmail});
+        var userDetails = await Register.findOne({ email: inputEmail });
 
-        if (userDetails.password === inputPassword)
-        {
+        if (userDetails.password === inputPassword) {
             res.status(201).render('index');
         }
-        else
-        {
+        else {
             res.send('Invalid login details');
-        }              
+        }
     }
-    catch(err)
-    {
+    catch (err) {
         console.log(err);
         res.status(400).send(err);
     }
