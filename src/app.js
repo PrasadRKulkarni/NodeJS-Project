@@ -3,9 +3,9 @@ var express = require('express');
 var hbs = require('hbs');
 var app = express();
 var path = require('path');
-var PORT = process.env.port || 8080;
+var PORT = process.env.port || 8085;
 
-
+console.log(PORT);
 
 require('./db/conn.js');
 var Register = require('./models/register.js');
